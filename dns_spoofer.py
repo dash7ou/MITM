@@ -14,7 +14,10 @@ def process_packet(packet):
 
     # here we add packet to IP layer in scapy
     scapy_packet = scapy.IP(packet.get_payload())
-    print(scapy_packet.show())
+
+    # DNSRQ dns request, DNSRR dns response
+    if scapy_packet.haslayer(scapy.DNSRR):
+        print(scapy_packet.show())
     packet.accept()
 
 
