@@ -5,7 +5,7 @@ import scapy.all as scapy
 def process_packet(packet):
     scapy_packet = scapy.IP(packet.get_payload())
     '''
-        here we check if have http layer 
+        here we check if have http layer
         we do not know if have reqhttp / reshttp
         scapy work contain the main layer tcp udp ip
         and in the last the row data => http data and row layer
@@ -13,10 +13,14 @@ def process_packet(packet):
     if scapy_packet.haslayer(scapy.Raw):
         if scapy_packet[scapy.TCP].dport == 80:
             print("HTTP Request")
-            print(scapy_packet.show())
+            # print(scapy_packet.show())
+            print(str(scapy_packet[scapy.Raw].load))
+            if ".docx" in str(scapy_packet[scapy.Raw].load):
+                print("[+] docx Request")
+                print(scapy_packet.show())
         elif scapy_packet[scapy.TCP].sport == 80:
             print("HTTP Respose")
-            print(scapy_packet.show())
+            # print(scapy_packet.show())
     packet.accept()
 
 
