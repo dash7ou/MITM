@@ -2,7 +2,6 @@
 
 import netfilterqueue
 import scapy.all as scapy
-import re
 
 
 # this dns spoofer only for http sites
